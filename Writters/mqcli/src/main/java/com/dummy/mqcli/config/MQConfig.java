@@ -2,8 +2,7 @@ package com.dummy.mqcli.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.util.Properties;
 
@@ -20,6 +19,7 @@ public class MQConfig {
     private String getPropertyOrThrow(Properties properties, String key) {
         String value = properties.getProperty(key);
         if (value == null || value.isEmpty()) {
+            log.error("La propiedad '" + key + "' no está informada.");
             throw new IllegalArgumentException("La propiedad '" + key + "' no está informada.");
         }
         return value;
