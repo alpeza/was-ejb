@@ -1,0 +1,5 @@
+profile: cli
+defaultPackage: io.micronaut.example
+---
+testFramework: junit
+sourceLanguage: java
