@@ -1,5 +1,6 @@
 package com.dummy.mqcli;
 
+import com.dummy.mqcli.commands.PutRandomImportes;
 import com.dummy.mqcli.commands.Putjms;
 
 
@@ -10,7 +11,7 @@ import picocli.CommandLine.Command;
 @Command(name = "mqcli",
         description = "Aplicación CLI para leer y escribir mensajes JMS en colas MQ.",
         mixinStandardHelpOptions = true,
-        subcommands = {Putjms.class})
+        subcommands = {Putjms.class,PutRandomImportes.class})
 public class Application implements Runnable {
 
     @Override
