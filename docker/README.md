@@ -3,10 +3,10 @@
 [https:///localhost:9043/ibm/console](https:///localhost:9043/ibm/console)
 
 * Usuario: wsadmin
-* Password: `docker exec decwas cat /tmp/PASSWORD`
+* Password: `docker exec was cat /tmp/PASSWORD`
 
 
-`docker exec decwas tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/*.txt`
+`docker exec was tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/*.txt`
 
 docker exec decwas sh -c 'tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/*.txt'
 
