@@ -4,8 +4,9 @@ version: '3'
 #******* Was Server *******
 #--------------------------
 services:
-  decwas:
-    container_name: decwas
+
+  was:
+    container_name: was
     image: ibmcom/websphere-traditional:latest
     ports:
       - "9080:9080"
