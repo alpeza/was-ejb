@@ -80,7 +80,6 @@ public class MensajeJsonGenerator {
     }
     public static void main(String[] args) {
         MensajeJsonGenerator generador = new MensajeJsonGenerator();
-
         for (int i = 0; i < 5; i++) {
             String mensajeJson = generador.generarMensajeJson();
             System.out.println(mensajeJson);
