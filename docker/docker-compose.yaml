@@ -1,11 +1,12 @@
 version: '3'
 
-#------------------------
-#******* DEC Core *******
-#------------------------
+#--------------------------
+#******* Was Server *******
+#--------------------------
 services:
-  decwas:
-    container_name: decwas
+
+  was:
+    container_name: was
     image: ibmcom/websphere-traditional:latest
     ports:
       - "9080:9080"
@@ -17,7 +18,9 @@ services:
     volumes:
       - ./artifacts:/home/was/artifact
       - ./scripts:/home/was/scripts
-      #- was_data:/opt/IBM/WebSphere
+      - was_data:/opt/IBM/WebSphere
+
+
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
