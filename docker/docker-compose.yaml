@@ -1,16 +1,15 @@
 version: '3'
 
-#--------------------------
-#******* Was Server *******
-#--------------------------
 services:
-
+  #******* Was Server *******
   was:
-    container_name: was
     image: ibmcom/websphere-traditional:latest
+    container_name: was
     ports:
-      - "9080:9080"
-      - "9043:9043"
+      - "9060:9060"  # Puertos de administración de la consola
+      - "9043:9043"  # Puertos seguros de la consola
+      - "9080:9080"  # Puertos de aplicaciones
+      - "9443:9443"  # Puertos seguros de aplicaciones
     environment:
       - LICENSE=accept
       - PROFILE_NAME=AppSrv01
@@ -18,21 +17,10 @@ services:
     volumes:
       - ./artifacts:/home/was/artifact
       - ./scripts:/home/was/scripts
+      # Consutlar /opt/IBM/WebSphere/AppServer/profiles/AppSrv01
       - was_data:/opt/IBM/WebSphere
 
-
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 8888:8080
-
-
-  #******* Infraestructura *******
-  #...............................
-  #> Servidor de colas MQ
+  #******* MQ Server *******
   mqserver:
     # admin:passw0rd
     container_name: mqserver
@@ -46,7 +34,7 @@ services:
       - MQSNOAUT=yes
       - MQ_DEV=true
 
-  #> Servidor de base de datos Oracle
+  #******* Oracle *******
   ora:
     image: gvenzl/oracle-xe:21-slim
     container_name: ora
@@ -61,6 +49,16 @@ services:
       - 5500:5500
     volumes:
       - oracle_data:/opt/oracle/oradata/XE
+
+  #******* Dozzle *******
+  # Herramienta para ver logs
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8888:8080
 
 volumes:
   oracle_data:
