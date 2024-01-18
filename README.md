@@ -8,5 +8,12 @@ Repositorio de ejemplo de una aplicación WAS
 
 ## Servidor WAS
 
-Podemos acceder a `/opt/IBM/WebSphere/AppServer/profiles/AppSrv01` 
+[https:///localhost:9043/ibm/console](https:///localhost:9043/ibm/console)
+
+* Usuario: wsadmin
+* Password: `docker exec was cat /tmp/PASSWORD`
+
+
+> * Logs: `docker exec was tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/*.txt`
+> * Acceso a perfil: `/opt/IBM/WebSphere/AppServer/profiles/AppSrv01` 
 
