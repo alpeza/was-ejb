@@ -6,10 +6,8 @@ services:
     image: ibmcom/websphere-traditional:latest
     container_name: was
     ports:
-      - "9060:9060"  # Puertos de administración de la consola
-      - "9043:9043"  # Puertos seguros de la consola
-      - "9080:9080"  # Puertos de aplicaciones
-      - "9443:9443"  # Puertos seguros de aplicaciones
+      - "9080:9080"
+      - "9043:9043"
     environment:
       - LICENSE=accept
       - PROFILE_NAME=AppSrv01
