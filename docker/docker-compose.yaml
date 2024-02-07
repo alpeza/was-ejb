@@ -3,7 +3,7 @@ version: '3'
 services:
   #******* Was Server *******
   was:
-    image: ibmcom/websphere-traditional:latest
+    image: ibmcom/websphere-traditional:8.5.5.22
     container_name: was
     ports:
       - "9080:9080"

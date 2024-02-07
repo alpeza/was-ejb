@@ -17,3 +17,16 @@ Repositorio de ejemplo de una aplicación WAS
 > * Logs: `docker exec was tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/*.txt`
 > * Acceso a perfil: `/opt/IBM/WebSphere/AppServer/profiles/AppSrv01` 
 
+## Servidor MQ
+
+Accedemos
+
+```bash
+docker exec -it mqserver bash
+```
+
+```bash
+runmqsc QM1
+ALTER QMGR CHLAUTH(DISABLED)
+EXIT
+```

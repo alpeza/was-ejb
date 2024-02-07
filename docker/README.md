@@ -39,6 +39,7 @@ Siguiendo con el manual pero adaptado:  https://github.com/ibm-cloud-architectur
 - 1.- Vamos a `Resources -> JMS -> Queue connection factories`
 - 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1` 
 - 3.- Le damos a NEW y marcamos: `WebSphere MQ messaging provider`
+
 - **Step  1:  Configure basic attributes**
    - Name: `TestConnectionFactory` 
    - JNDIName: `jms/TestConnectionFactory` 
@@ -54,7 +55,7 @@ Siguiendo con el manual pero adaptado:  https://github.com/ibm-cloud-architectur
 
 Nos dará el siguiente summary
 
-```agsl
+```
 Creating a resource of type Queue connection factory- Name "TestConnectionFactory"
 - JNDI name "jms/TestConnectionFactory"
 - Queue manager or queue sharing group name "QM1"

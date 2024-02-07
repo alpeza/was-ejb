@@ -7,9 +7,16 @@ yes() {
     set -x
 }
 
+
+runScript(){
+  script="$1"
+  yes 5 | $wsadminp/wsadmin.sh -lang jython -f "/home/was/scripts/$1" -user ${USER_WAS} -password ${PSW_WAS}
+}
+
 set -x
 wsadminp="/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/bin"
 USER_WAS="wsadmin"
 PSW_WAS="$(cat /tmp/PASSWORD)"
 
-yes 5 | $wsadminp/wsadmin.sh -lang jython -f "$(pwd)/createJMSFactory.py" -user ${USER_WAS} -password ${PSW_WAS}
+# Configuramos el connection factory
+runScript "ConfigureTestMDB/CreateConnectionFactory.py"
