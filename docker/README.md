@@ -20,13 +20,6 @@ docker exec decwas sh -c 'tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01
 * https://blog.tericcabrel.com/web-application-springboot-thymeleaf-tailwindcss/
 
 
-DecWas
-
-```
-https://10.241.122.200:9043/ibm/console/logon.jsp
-USER_WAS=decadmin
-PSW_WAS=decdec
-```
 
 
 ## Deploy
