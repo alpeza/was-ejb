@@ -1,0 +1,21 @@
+FROM ibmcom/websphere-traditional:8.5.5.22
+
+# Copiar los archivos de instalación del cliente de Oracle al contenedor
+COPY oracle/11Series/instantclient-basic-linux.x64-11.2.0.4.0.zip \
+     oracle/11Series/instantclient-sqlplus-linux.x64-11.2.0.4.0.zip \
+     /opt/oracle/
+
+# Instalación del Oracle
+USER root
+RUN yum update -y && \
+    yum -y install libaio && \
+    yum install -y unzip && \
+    yum install -y glibc
+
+RUN unzip -d /opt/oracle /opt/oracle/instantclient-basic-linux.x64-11.2.0.4.0.zip && \
+    unzip -d /opt/oracle /opt/oracle/instantclient-sqlplus-linux.x64-11.2.0.4.0.zip && \
+    rm /opt/oracle/*.zip && \
+    echo 'export LD_LIBRARY_PATH=/opt/oracle/instantclient_11_2:$LD_LIBRARY_PATH' >> ~/.bashrc && \
+    echo 'export PATH=$LD_LIBRARY_PATH:$PATH' >> ~/.bashrc
+
+ENV TNS_ADMIN /opt/oracle/instantclient_11_2/network/admin

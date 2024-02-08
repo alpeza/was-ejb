@@ -1,0 +1,26 @@
+FROM ibmcom/websphere-traditional:8.5.5.22
+
+# Copiar los archivos de instalación del cliente de Oracle al contenedor
+COPY oracle/19Series/instantclient-basic-linux.x64-19.21.0.0.0dbru.zip \
+     oracle/19Series/instantclient-sqlplus-linux.x64-19.21.0.0.0dbru.zip \
+     /opt/oracle/
+
+# Instalación del Oracle
+USER root
+RUN yum update -y && \
+    yum -y install libaio && \
+    yum install -y unzip && \
+    yum install -y glibc
+
+RUN unzip -d /opt/oracle /opt/oracle/instantclient-basic-linux.x64-19.21.0.0.0dbru.zip && \
+    unzip -d /opt/oracle /opt/oracle/instantclient-sqlplus-linux.x64-19.21.0.0.0dbru.zip && \
+    rm /opt/oracle/*.zip && \
+    echo 'export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_21:$LD_LIBRARY_PATH' >> ~/.bashrc && \
+    echo 'export PATH=$LD_LIBRARY_PATH:$PATH' >> ~/.bashrc
+
+# Añadimos los drivers ojdbc5 y ojdbc6
+COPY oracle/19Series/ojdbc5.jar  \
+     oracle/19Series/ojdbc6.jar \
+     /opt/oracle/instantclient_19_21/
+
+ENV TNS_ADMIN /opt/oracle/instantclient_19_21/network/admin
