@@ -16,6 +16,9 @@ public class PutRandomImportes implements Runnable {
     @CommandLine.Option(names = {"--number"}, required = true, description = "Número de mensajes a escribir")
     private int total;
 
+    @CommandLine.Option(names = {"--channel"}, required = true, description = "Canal a través del que se insertan datos")
+    private String canal;
+
     @CommandLine.Option(names = {"--config"}, required = true, description = "Fichero de propiedades de configuración")
     private String configFile;
 
@@ -24,7 +27,7 @@ public class PutRandomImportes implements Runnable {
     public void run() {
         ConfigLoader.validateConfigFile(configFile);
         MQJMSProducer mqjmsProducer = new MQJMSProducer(ConfigLoader.loadConfig(configFile), queue);
-        MensajeJsonGenerator generador = new MensajeJsonGenerator();
+        MensajeJsonGenerator generador = new MensajeJsonGenerator(canal);
         for (int i = 0; i < total; i++) {
             String mensajeJson = generador.generarMensajeJson();
             log.info("Tratando de escribir: " + mensajeJson);

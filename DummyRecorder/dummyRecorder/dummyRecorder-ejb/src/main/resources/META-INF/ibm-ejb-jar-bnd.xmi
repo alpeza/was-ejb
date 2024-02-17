@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Descriptor de Vinculación del EJB-JAR para IBM WebSphere -->
+<ejbbnd:EJBJarBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ejbbnd="ejbbnd.xmi" xmlns:ejb="ejb.xmi" xmi:id="EJBJarBinding_1122386638210">
+    <!-- Referencia al archivo ejb-jar.xml correspondiente -->
+    <ejbJar href="META-INF/ejb-jar.xml#ejb-jar_ID"/>
+
+    <!-- ****************************************** -->
+    <!--****** MDB para el canal de Internet ******-->
+    <!-- ****************************************** -->
+    <ejbBindings xmi:type="ejbbnd:MessageDrivenBeanBinding" xmi:id="MessageDrivenBeanBinding_1122386638210" listenerInputPortName="CANAL.INTERNET">
+        <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
+        <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#internet.mdb"/>
+        <!-- Vinculación de referencia a recursos para el MDB -->
+        <resRefBindings xmi:id="ResourceRefBinding_internet.mdb.ds" jndiName="jdbc/DECCAX">
+            <bindingResourceRef href="META-INF/ejb-jar.xml#internet.mdb.ds"/>
+        </resRefBindings>
+    </ejbBindings>
+    <!-- ****************************************** -->
+    <!--******   MDB para el canal de Tienda  ******-->
+    <!-- ****************************************** -->
+    <ejbBindings xmi:type="ejbbnd:MessageDrivenBeanBinding" xmi:id="MessageDrivenBeanBinding_1122386638210" listenerInputPortName="CANAL.TIENDA">
+        <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
+        <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#tienda.mdb"/>
+        <!-- Vinculación de referencia a recursos para el MDB -->
+        <resRefBindings xmi:id="ResourceRefBinding_tienda.mdb.ds" jndiName="jdbc/DECCAX">
+            <bindingResourceRef href="META-INF/ejb-jar.xml#tienda.mdb.ds"/>
+        </resRefBindings>
+    </ejbBindings>
+    <!-- ****************************************** -->
+    <!--*****  MDB para el canal de Telefonico *****-->
+    <!-- ****************************************** -->
+    <ejbBindings xmi:type="ejbbnd:MessageDrivenBeanBinding" xmi:id="MessageDrivenBeanBinding_1122386638210" listenerInputPortName="CANAL.TELEFONICO">
+        <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
+        <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#telefonico.mdb"/>
+        <!-- Vinculación de referencia a recursos para el MDB -->
+        <resRefBindings xmi:id="ResourceRefBinding_telefonico.mdb.ds" jndiName="jdbc/DECCAX">
+            <bindingResourceRef href="META-INF/ejb-jar.xml#telefonico.mdb.ds"/>
+        </resRefBindings>
+    </ejbBindings>
+</ejbbnd:EJBJarBinding>

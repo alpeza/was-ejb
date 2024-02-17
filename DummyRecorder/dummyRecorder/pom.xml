@@ -6,7 +6,8 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>dummyRecorder</name>
-<modules>  <module>dummyRecorder-ejb</module>
+  <modules>
+    <module>dummyRecorder-ejb</module>
     <module>dummyRecorder-ear</module>
   </modules>
 </project>

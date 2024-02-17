@@ -5,10 +5,13 @@ services:
   was:
     #image: ibmcom/websphere-traditional:8.5.5.22
     image: was85-19c:latest
+    #image: ibmcom/websphere-traditional:latest
     container_name: was
     ports:
       - "9080:9080"
       - "9043:9043"
+      - "8880:8880"
+      - "2809:2809"
     environment:
       - LICENSE=accept
       - PROFILE_NAME=AppSrv01
