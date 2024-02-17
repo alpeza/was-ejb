@@ -20,25 +20,66 @@ docker exec decwas sh -c 'tail -f /opt/IBM/WebSphere/AppServer/profiles/AppSrv01
 * https://blog.tericcabrel.com/web-application-springboot-thymeleaf-tailwindcss/
 
 
-DecWas
-
-```
-https://10.241.122.200:9043/ibm/console/logon.jsp
-USER_WAS=decadmin
-PSW_WAS=decdec
-```
 
 
 ## Deploy
 
+### Configuración de datasource Oracle
+
+#### Creación del proveedor JDBC
+
+- 1.- Vamos a `Resources -> JDBC providers` 
+- 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1`
+- 3.- Le damos a NEW 
+
+- **Step 1:**
+  - Database type: `Oracle`
+  - Provider type: `Oracle JDBC Driver`
+  - Implementation type: `XA data source` 
+  - Name: `Oracle JDBC Driver (XA)`
+
+- **Step 2:**
+  - Class path: `${ORACLE_JDBC_DRIVER_PATH}/ojdbc6.jar`
+  - Directory location for "ojdbc8.jar" which is saved as WebSphere: `/opt/oracle/instantclient_19_21`
+
+```agsl
+- Scope 	cells:DefaultCell01:nodes:DefaultNode01:servers:server1
+- JDBC provider name 	Oracle JDBC Driver (XA)
+- Description 	Oracle JDBC Driver (XA)
+- Class path 	${ORACLE_JDBC_DRIVER_PATH}/ojdbc8.jar
+- ${ORACLE_JDBC_DRIVER_PATH} 	/opt/oracle/instantclient_19_21
+- Implementation class name 	oracle.jdbc.xa.client.OracleXADataSource 
+```
+
+#### Creación del datasource
+
+- 1.- Vamos a `Resources -> Data sources`
+- 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1`
+- 3.- Le damos a NEW 
+
+- **Step 1: Enter basic data source information**
+  - Data source name: `LOCALORA`
+  - JNDI name: `jdbc/LOCALORA`
+
+-  **Step 2: Select JDBC provider**
+  - Select an existing JDBC provider: `Oracle JDBC Driver (XA)`
+
+- **Step 3: Enter database specific properties for the data source**
+  -  URL: `jdbc:oracle:thin:system/oracle@ora:1521/xe`
+  
+- **Step 4: Setup security aliases**
+  - Por simplicidad hemos se ha añadido el usuario y password en la cadena de conexión, en el paso anterior.
+
+### Configuración de los listeners
 
 Siguiendo con el manual pero adaptado:  https://github.com/ibm-cloud-architecture/refarch-mq-messaging/blob/master/docs/mdb-twas/README.md
 
-### Creación de la factoria
+#### Creación de la factoria
 
 - 1.- Vamos a `Resources -> JMS -> Queue connection factories`
 - 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1` 
 - 3.- Le damos a NEW y marcamos: `WebSphere MQ messaging provider`
+
 - **Step  1:  Configure basic attributes**
    - Name: `TestConnectionFactory` 
    - JNDIName: `jms/TestConnectionFactory` 
@@ -54,7 +95,7 @@ Siguiendo con el manual pero adaptado:  https://github.com/ibm-cloud-architectur
 
 Nos dará el siguiente summary
 
-```agsl
+```
 Creating a resource of type Queue connection factory- Name "TestConnectionFactory"
 - JNDI name "jms/TestConnectionFactory"
 - Queue manager or queue sharing group name "QM1"
@@ -64,7 +105,7 @@ Creating a resource of type Queue connection factory- Name "TestConnectionFactor
 - Channel name "DEV.ADMIN.SVRCONN"
 ```
 
-### Creación de la cola de peticiones
+#### Creación de la cola de peticiones
 
 - 1.- Vamos a `Resources -> JMS -> Queues`
 - 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1` 
@@ -74,7 +115,7 @@ Creating a resource of type Queue connection factory- Name "TestConnectionFactor
   - JNDI name: `jms/TestRequestQueue`
   - Queue name: `DEV.QUEUE.1`
 
-### Creación de la cola de respuestas
+#### Creación de la cola de respuestas
 
 - 1.- Vamos a `Resources -> JMS -> Queues`
 - 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1`
@@ -84,7 +125,7 @@ Creating a resource of type Queue connection factory- Name "TestConnectionFactor
   - JNDI name: `jms/TestResponseQueue`
   - Queue name: `DEV.QUEUE.2`
 
-### Creación de especificaciones de activación
+#### Creación de especificaciones de activación
 
 - 1.- Vamos a `Resources -> JMS -> Activation specifications`
 - 2.- Seteamos en SCOPE: `cells:DefaultCell01:nodes:DefaultNode01:servers:server1`

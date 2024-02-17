@@ -47,6 +47,14 @@
               <ejbModule>
                 <groupId>com.dummyRecorder</groupId>
                 <artifactId>dummyRecorder-ejb</artifactId>
+                <ejbModule>
+                  <groupId>com.dummyRecorder</groupId>
+                  <artifactId>dummyRecorder-ejb</artifactId>
+                  <bundleDir>META-INF</bundleDir>
+                  <includeInApplicationXml>true</includeInApplicationXml>
+                  <unpack>true</unpack>
+                  <uri>ejb-jar.xml</uri>
+                </ejbModule>
               </ejbModule>
             </module>
         </configuration>

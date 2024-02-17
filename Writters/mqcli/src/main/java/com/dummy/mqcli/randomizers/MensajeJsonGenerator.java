@@ -27,12 +27,13 @@ public class MensajeJsonGenerator {
     private Gson gson;
     private SimpleDateFormat dateFormat;
     private DecimalFormat decimalFormat;
-
-    public MensajeJsonGenerator() {
+    private String canal;
+    public MensajeJsonGenerator(String canal) {
         random = new Random();
         gson = new Gson();
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         decimalFormat = new DecimalFormat("#.##");
+        this.canal = canal;
     }
 
     public String generarMensajeJson() {
@@ -41,7 +42,7 @@ public class MensajeJsonGenerator {
         String timestamp = obtenerTimestampActual();
         double importe = obtenerImporteAleatorio();
 
-        MensajeJson mensaje = new MensajeJson(nombreUsuario, apellidoUsuario, timestamp, importe);
+        MensajeJson mensaje = new MensajeJson(nombreUsuario, apellidoUsuario, timestamp, importe, this.canal);
 
         return gson.toJson(mensaje);
     }
@@ -66,20 +67,21 @@ public class MensajeJsonGenerator {
 
     private static class MensajeJson {
         private String nombre;
-
+        private String canal;
         private String apellido;
         private String timestamp;
         private double importe;
 
-        public MensajeJson(String nombre, String apellido, String timestamp, double importe) {
+        public MensajeJson(String nombre, String apellido, String timestamp, double importe, String canal) {
             this.nombre = nombre;
             this.timestamp = timestamp;
             this.importe = importe;
             this.apellido = apellido;
+            this.canal = canal;
         }
     }
     public static void main(String[] args) {
-        MensajeJsonGenerator generador = new MensajeJsonGenerator();
+        MensajeJsonGenerator generador = new MensajeJsonGenerator("internet");
         for (int i = 0; i < 5; i++) {
             String mensajeJson = generador.generarMensajeJson();
             System.out.println(mensajeJson);

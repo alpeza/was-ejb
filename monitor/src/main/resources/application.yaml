@@ -1,0 +1,8 @@
+wasadmin:
+  host: localhost
+  port: "8880"
+  user: wsadmin
+  password: 0YCeKJ/Y
+
+# curl -X GET -u wsadmin:0YCeKJ/Y localhost:8880
+# curl -k -X GET -u wsadmin:0YCeKJ/Y https://localhost:8880 | xmllint --format - | pygmentize -l xml

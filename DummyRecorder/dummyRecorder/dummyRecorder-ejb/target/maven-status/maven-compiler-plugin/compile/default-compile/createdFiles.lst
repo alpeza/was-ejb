@@ -1,3 +1,2 @@
-com/dummyRecorder/utils/AppendStringToFile.class
-com/dummyRecorder/model/MessageRecord.class
+com/dummyRecorder/model/CanalRecord.class
 com/dummyRecorder/ejb/EjemploMDB.class
