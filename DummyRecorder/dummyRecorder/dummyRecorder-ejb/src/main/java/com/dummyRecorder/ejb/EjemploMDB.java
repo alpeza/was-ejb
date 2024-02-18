@@ -1,5 +1,8 @@
 package com.dummyRecorder.ejb;
 
+import com.dummyRecorder.mbeans.AppMonitor;
+import com.dummyRecorder.mbeans.AppMonitorMBean;
+import com.dummyRecorder.mbeans.MDBStats;
 import com.dummyRecorder.model.CanalRecord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,10 +13,11 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 
-
-
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,16 +27,15 @@ import javax.naming.InitialContext;
 
 import java.text.SimpleDateFormat;
 
-
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "MyQueue")
 })
 @Slf4j
-public class EjemploMDB implements MessageListener{
-
+public class EjemploMDB implements MessageListener {
 
     private String datasourceId = "jdbc/LOCALORA";
+
 
     /**
      * Recepción de mensajes de la cola MQ
@@ -43,6 +46,7 @@ public class EjemploMDB implements MessageListener{
         TextMessage txtMsg = (TextMessage)msg;
         try {
             log.info("Llega el mensaje:" + txtMsg.getText());
+            MDBStats.incrementaMensajes();
             try {
                 //1.- Tratamos de procesar el mensaje que llega por la cola MQ. Este está en formato json
                 ObjectMapper mapper = new ObjectMapper();
@@ -50,15 +54,19 @@ public class EjemploMDB implements MessageListener{
                 log.info("Mensaje parseado: " + canalRecord.toString());
                 //2.- Tratamos de escribir el mensaje en la base de datos:
                 insertCanalRecordIntoDatabase(canalRecord);
+                //3.- Actualizamos las estadísticas
+                MDBStats.incrementaMensajesOK();
             }catch (Exception ex){
                 //En caso de que este mensaje no se pueda procesar se añade a descartados.
                 log.error("Error al tratar de deserializar el mensaje: " + txtMsg.getText());
                 log.error(ex.toString());
                 insertDescartadoIntoDatabase(txtMsg.getText());
+                MDBStats.incrementaMensajesKO();
             }
         }catch(Exception e) {
             log.error("Error al leer el mensaje que llega a la cola MQ");
             log.error(e.getMessage());
+            MDBStats.incrementaMensajesKO();
         }
     }
 
