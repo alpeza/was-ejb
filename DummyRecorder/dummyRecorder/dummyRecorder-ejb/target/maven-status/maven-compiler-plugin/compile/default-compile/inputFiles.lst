@@ -1,5 +1,6 @@
 /home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/mbeans/AppMonitorMBean.java
 /home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/ejb/EjemploMDB.java
 /home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/mbeans/AppMonitor.java
-/home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/model/CanalRecord.java
+/home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/model/TransaccionRecord.java
+/home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/model/Transaccion.java
 /home/ubuntu23/tmpprojects/was-ejb/DummyRecorder/dummyRecorder/dummyRecorder-ejb/src/main/java/com/dummyRecorder/mbeans/MDBStats.java

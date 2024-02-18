@@ -2,6 +2,7 @@ package com.dummy.mqcli.commands;
 
 import com.dummy.mqcli.config.ConfigLoader;
 import com.dummy.mqcli.randomizers.MensajeJsonGenerator;
+import com.dummy.mqcli.randomizers.TransaccionGenerator;
 import com.dummy.mqcli.services.MQJMSProducer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,11 @@ public class PutRandomImportes implements Runnable {
     public void run() {
         ConfigLoader.validateConfigFile(configFile);
         MQJMSProducer mqjmsProducer = new MQJMSProducer(ConfigLoader.loadConfig(configFile), queue);
-        MensajeJsonGenerator generador = new MensajeJsonGenerator(canal);
+        //MensajeJsonGenerator generador = new MensajeJsonGenerator(canal);
+        TransaccionGenerator generador = new TransaccionGenerator();
         for (int i = 0; i < total; i++) {
-            String mensajeJson = generador.generarMensajeJson();
+            //String mensajeJson = generador.generarMensajeJson();
+            String mensajeJson = generador.generateRandomTransaccionJSON(canal);
             log.info("Tratando de escribir: " + mensajeJson);
             mqjmsProducer.sendMessage(mensajeJson);
         }
