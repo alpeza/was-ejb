@@ -5,7 +5,6 @@ services:
   was:
     #image: ibmcom/websphere-traditional:8.5.5.22
     image: was85-19c:latest
-    #image: ibmcom/websphere-traditional:latest
     container_name: was
     ports:
       - "9080:9080"

@@ -11,7 +11,7 @@
         <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
         <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#internet.mdb"/>
         <!-- Vinculación de referencia a recursos para el MDB -->
-        <resRefBindings xmi:id="ResourceRefBinding_internet.mdb.ds" jndiName="jdbc/DECCAX">
+        <resRefBindings xmi:id="ResourceRefBinding_internet.mdb.ds" jndiName="jdbc/LOCALORA">
             <bindingResourceRef href="META-INF/ejb-jar.xml#internet.mdb.ds"/>
         </resRefBindings>
     </ejbBindings>
@@ -22,7 +22,7 @@
         <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
         <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#tienda.mdb"/>
         <!-- Vinculación de referencia a recursos para el MDB -->
-        <resRefBindings xmi:id="ResourceRefBinding_tienda.mdb.ds" jndiName="jdbc/DECCAX">
+        <resRefBindings xmi:id="ResourceRefBinding_tienda.mdb.ds" jndiName="jdbc/LOCALORA">
             <bindingResourceRef href="META-INF/ejb-jar.xml#tienda.mdb.ds"/>
         </resRefBindings>
     </ejbBindings>
@@ -33,7 +33,7 @@
         <!-- Referencia al Bean de Mensajes (MDB) en ejb-jar.xml -->
         <enterpriseBean xmi:type="ejb:MessageDriven" href="META-INF/ejb-jar.xml#telefonico.mdb"/>
         <!-- Vinculación de referencia a recursos para el MDB -->
-        <resRefBindings xmi:id="ResourceRefBinding_telefonico.mdb.ds" jndiName="jdbc/DECCAX">
+        <resRefBindings xmi:id="ResourceRefBinding_telefonico.mdb.ds" jndiName="jdbc/LOCALORA">
             <bindingResourceRef href="META-INF/ejb-jar.xml#telefonico.mdb.ds"/>
         </resRefBindings>
     </ejbBindings>
