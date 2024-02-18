@@ -1,5 +1,8 @@
 package com.dummyRecorder.ejb;
 
+import com.dummyRecorder.mbeans.AppMonitor;
+import com.dummyRecorder.mbeans.AppMonitorMBean;
+import com.dummyRecorder.mbeans.MDBStats;
 import com.dummyRecorder.model.CanalRecord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,25 +13,29 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 
-
-import javax.annotation.Resource;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import java.text.SimpleDateFormat;
 
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "MyQueue")
 })
 @Slf4j
-public class EjemploMDB implements MessageListener{
+public class EjemploMDB implements MessageListener {
 
+    private String datasourceId = "jdbc/LOCALORA";
 
-    @Resource(name = "jdbc/LOCALORA")
-    private DataSource dataSource;
 
     /**
      * Recepción de mensajes de la cola MQ
@@ -39,6 +46,7 @@ public class EjemploMDB implements MessageListener{
         TextMessage txtMsg = (TextMessage)msg;
         try {
             log.info("Llega el mensaje:" + txtMsg.getText());
+            MDBStats.incrementaMensajes();
             try {
                 //1.- Tratamos de procesar el mensaje que llega por la cola MQ. Este está en formato json
                 ObjectMapper mapper = new ObjectMapper();
@@ -46,15 +54,19 @@ public class EjemploMDB implements MessageListener{
                 log.info("Mensaje parseado: " + canalRecord.toString());
                 //2.- Tratamos de escribir el mensaje en la base de datos:
                 insertCanalRecordIntoDatabase(canalRecord);
+                //3.- Actualizamos las estadísticas
+                MDBStats.incrementaMensajesOK();
             }catch (Exception ex){
                 //En caso de que este mensaje no se pueda procesar se añade a descartados.
                 log.error("Error al tratar de deserializar el mensaje: " + txtMsg.getText());
                 log.error(ex.toString());
-                //insertDescartadoIntoDatabase(txtMsg.getText());
+                insertDescartadoIntoDatabase(txtMsg.getText());
+                MDBStats.incrementaMensajesKO();
             }
         }catch(Exception e) {
             log.error("Error al leer el mensaje que llega a la cola MQ");
             log.error(e.getMessage());
+            MDBStats.incrementaMensajesKO();
         }
     }
 
@@ -63,16 +75,23 @@ public class EjemploMDB implements MessageListener{
      * @param serializedMessage
      */
     private void insertDescartadoIntoDatabase(String serializedMessage) {
-        try (Connection connection = dataSource.getConnection()) {
+        try  {
+
+            Context ctx = new InitialContext();
+            DataSource dataSource = (DataSource) ctx.lookup(datasourceId);
             String insertQuery = "INSERT INTO descartes (content, timestampc) VALUES (?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                statement.setString(1, serializedMessage);
-                statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                statement.executeUpdate();
-                log.info("Mensaje insertado en la base de datos.");
-            }
+            Connection connection = dataSource.getConnection();
+
+
+            PreparedStatement statement = connection.prepareStatement(insertQuery);
+            statement.setString(1, serializedMessage);
+            statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            statement.executeUpdate();
+
+            log.info("Mensaje: " + serializedMessage + " insertado en la base de datos `descartes`.");
         } catch (Exception e) {
-            log.error("Error al insertar el mensaje en la base de datos: " + e.getMessage());
+            e.printStackTrace();
+            log.error("DESCARTADOS: Error al insertar el mensaje en descartados: " + e.getMessage());
         }
     }
 
@@ -82,19 +101,31 @@ public class EjemploMDB implements MessageListener{
      * @param registro
      */
     public void insertCanalRecordIntoDatabase(CanalRecord registro) {
-        try (Connection connection = dataSource.getConnection()) {
+        try  {
+            // Obtener el contexto inicial
+            Context ctx = new InitialContext();
+            // Buscar el DataSource usando su nombre JNDI
+            DataSource dataSource = (DataSource) ctx.lookup(datasourceId);
+            // Obtener la conexión del DataSource
+            Connection connection = dataSource.getConnection();
             String insertQuery = "INSERT INTO canal (nombre, canal, apellido, timestampc, importe) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                statement.setString(1, registro.getNombre());
-                statement.setString(2, registro.getCanal());
-                statement.setString(3, registro.getApellido());
-                statement.setTimestamp(4, Timestamp.valueOf(registro.getTimestamp()));
-                statement.setDouble(5, registro.getImporte());
-                statement.executeUpdate();
-                log.info("Registro insertado en la base de datos.");
-            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            String timestampStr = registro.getTimestamp();
+            Timestamp timestamp = new Timestamp(dateFormat.parse(timestampStr).getTime());
+
+            PreparedStatement statement = connection.prepareStatement(insertQuery);
+            statement.setString(1, registro.getNombre());
+            statement.setString(2, registro.getCanal());
+            statement.setString(3, registro.getApellido());
+            statement.setTimestamp(4, timestamp);
+            statement.setDouble(5, registro.getImporte());
+            statement.executeUpdate();
+            log.info("Registro insertado en la base de datos de canal.");
+
         } catch (Exception e) {
-            log.error("Error al insertar el registro en la base de datos: " + e.getMessage());
+            e.printStackTrace();
+            log.error("Error al insertar el registro en la base de datos: " + e.toString());
         }
     }
 }

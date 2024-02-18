@@ -17,8 +17,6 @@
             <ejb-class>com.dummyRecorder.ejb.EjemploMDB</ejb-class>
             <!-- Tipo de mensajería para el MDB (MessageListener en este caso) -->
             <messaging-type>javax.jms.MessageListener</messaging-type>
-            <!-- Tipo de transacción para el MDB (Container-managed en este caso) -->
-            <transaction-type>Container</transaction-type>
             <!-- Configuración de Activación para el MDB -->
             <activation-config>
                 <activation-config-property>
@@ -32,7 +30,7 @@
             </activation-config>
             <!-- Referencia a Recurso para el MDB -->
             <resource-ref id="internet.mdb.ds">
-                <res-ref-name>jdbc/DECCAX</res-ref-name>
+                <res-ref-name>jdbc/LOCALORA</res-ref-name>
                 <res-type>javax.sql.DataSource</res-type>
                 <res-auth>Application</res-auth>
             </resource-ref>
@@ -49,9 +47,6 @@
             <ejb-class>com.dummyRecorder.ejb.EjemploMDB</ejb-class>
             <!-- Tipo de mensajería para el MDB (MessageListener en este caso) -->
             <messaging-type>javax.jms.MessageListener</messaging-type>
-            <!-- Tipo de transacción para el MDB (Container-managed en este caso) -->
-            <transaction-type>Container</transaction-type>
-            <!-- Configuración de Activación para el MDB -->
             <activation-config>
                 <activation-config-property>
                     <activation-config-property-name>destinationType</activation-config-property-name>
@@ -64,7 +59,7 @@
             </activation-config>
             <!-- Referencia a Recurso para el MDB -->
             <resource-ref id="internet.mdb.ds">
-                <res-ref-name>jdbc/DECCAX</res-ref-name>
+                <res-ref-name>jdbc/LOCALORA</res-ref-name>
                 <res-type>javax.sql.DataSource</res-type>
                 <res-auth>Application</res-auth>
             </resource-ref>
@@ -82,8 +77,6 @@
             <ejb-class>com.dummyRecorder.ejb.EjemploMDB</ejb-class>
             <!-- Tipo de mensajería para el MDB (MessageListener en este caso) -->
             <messaging-type>javax.jms.MessageListener</messaging-type>
-            <!-- Tipo de transacción para el MDB (Container-managed en este caso) -->
-            <transaction-type>Container</transaction-type>
             <!-- Configuración de Activación para el MDB -->
             <activation-config>
                 <activation-config-property>
@@ -97,61 +90,12 @@
             </activation-config>
             <!-- Referencia a Recurso para el MDB -->
             <resource-ref id="internet.mdb.ds">
-                <res-ref-name>jdbc/DECCAX</res-ref-name>
+                <res-ref-name>jdbc/LOCALORA</res-ref-name>
                 <res-type>javax.sql.DataSource</res-type>
-                <res-auth>Application</res-auth>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
             </resource-ref>
         </message-driven>
-
     </enterprise-beans>
 
-    <!-- Descriptores de ensamblaje para el EJB-JAR -->
-    <assembly-descriptor>
-        <!-- Transacciones gestionadas por el contenedor -->
-        <!-- ****************************************** -->
-        <!--****** MDB para el canal de Internet ******-->
-        <!-- ****************************************** -->
-        <container-transaction>
-            <!-- Configuración de transacciones para el método onMessage de internet.mdb -->
-            <method>
-                <ejb-name>internet.mdb</ejb-name>
-                <method-name>onMessage</method-name>
-                <method-params>
-                    <method-param>javax.jms.Message</method-param>
-                </method-params>
-            </method>
-            <!-- Atributo de transacción (Requerido en este caso) -->
-            <trans-attribute>Required</trans-attribute>
-        </container-transaction>
-        <!-- ****************************************** -->
-        <!--****** MDB para el canal de Tienda  ******-->
-        <!-- ****************************************** -->
-        <container-transaction>
-            <!-- Configuración de transacciones para el método onMessage de internet.mdb -->
-            <method>
-                <ejb-name>tienda.mdb</ejb-name>
-                <method-name>onMessage</method-name>
-                <method-params>
-                    <method-param>javax.jms.Message</method-param>
-                </method-params>
-            </method>
-            <!-- Atributo de transacción (Requerido en este caso) -->
-            <trans-attribute>Required</trans-attribute>
-        </container-transaction>
-        <!-- ****************************************** -->
-        <!--****** MDB para el canal telefónico  ******-->
-        <!-- ****************************************** -->
-        <container-transaction>
-            <!-- Configuración de transacciones para el método onMessage de internet.mdb -->
-            <method>
-                <ejb-name>telefonico.mdb</ejb-name>
-                <method-name>onMessage</method-name>
-                <method-params>
-                    <method-param>javax.jms.Message</method-param>
-                </method-params>
-            </method>
-            <!-- Atributo de transacción (Requerido en este caso) -->
-            <trans-attribute>Required</trans-attribute>
-        </container-transaction>
-    </assembly-descriptor>
 </ejb-jar>

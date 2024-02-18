@@ -1,2 +1,5 @@
 com/dummyRecorder/model/CanalRecord.class
+com/dummyRecorder/mbeans/AppMonitor.class
+com/dummyRecorder/mbeans/AppMonitorMBean.class
 com/dummyRecorder/ejb/EjemploMDB.class
+com/dummyRecorder/mbeans/MDBStats.class
