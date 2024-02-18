@@ -13,10 +13,15 @@ import javax.jms.TextMessage;
 import java.sql.Timestamp;
 
 
-import javax.annotation.Resource;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import java.text.SimpleDateFormat;
 
 
 @MessageDriven(activationConfig = {
@@ -27,8 +32,7 @@ import java.sql.PreparedStatement;
 public class EjemploMDB implements MessageListener{
 
 
-    @Resource(name = "jdbc/LOCALORA")
-    private DataSource dataSource;
+    private String datasourceId = "jdbc/LOCALORA";
 
     /**
      * Recepción de mensajes de la cola MQ
@@ -50,7 +54,7 @@ public class EjemploMDB implements MessageListener{
                 //En caso de que este mensaje no se pueda procesar se añade a descartados.
                 log.error("Error al tratar de deserializar el mensaje: " + txtMsg.getText());
                 log.error(ex.toString());
-                //insertDescartadoIntoDatabase(txtMsg.getText());
+                insertDescartadoIntoDatabase(txtMsg.getText());
             }
         }catch(Exception e) {
             log.error("Error al leer el mensaje que llega a la cola MQ");
@@ -63,16 +67,23 @@ public class EjemploMDB implements MessageListener{
      * @param serializedMessage
      */
     private void insertDescartadoIntoDatabase(String serializedMessage) {
-        try (Connection connection = dataSource.getConnection()) {
+        try  {
+
+            Context ctx = new InitialContext();
+            DataSource dataSource = (DataSource) ctx.lookup(datasourceId);
             String insertQuery = "INSERT INTO descartes (content, timestampc) VALUES (?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                statement.setString(1, serializedMessage);
-                statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                statement.executeUpdate();
-                log.info("Mensaje insertado en la base de datos.");
-            }
+            Connection connection = dataSource.getConnection();
+
+
+            PreparedStatement statement = connection.prepareStatement(insertQuery);
+            statement.setString(1, serializedMessage);
+            statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            statement.executeUpdate();
+
+            log.info("Mensaje: " + serializedMessage + " insertado en la base de datos `descartes`.");
         } catch (Exception e) {
-            log.error("Error al insertar el mensaje en la base de datos: " + e.getMessage());
+            e.printStackTrace();
+            log.error("DESCARTADOS: Error al insertar el mensaje en descartados: " + e.getMessage());
         }
     }
 
@@ -82,19 +93,31 @@ public class EjemploMDB implements MessageListener{
      * @param registro
      */
     public void insertCanalRecordIntoDatabase(CanalRecord registro) {
-        try (Connection connection = dataSource.getConnection()) {
+        try  {
+            // Obtener el contexto inicial
+            Context ctx = new InitialContext();
+            // Buscar el DataSource usando su nombre JNDI
+            DataSource dataSource = (DataSource) ctx.lookup(datasourceId);
+            // Obtener la conexión del DataSource
+            Connection connection = dataSource.getConnection();
             String insertQuery = "INSERT INTO canal (nombre, canal, apellido, timestampc, importe) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                statement.setString(1, registro.getNombre());
-                statement.setString(2, registro.getCanal());
-                statement.setString(3, registro.getApellido());
-                statement.setTimestamp(4, Timestamp.valueOf(registro.getTimestamp()));
-                statement.setDouble(5, registro.getImporte());
-                statement.executeUpdate();
-                log.info("Registro insertado en la base de datos.");
-            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            String timestampStr = registro.getTimestamp();
+            Timestamp timestamp = new Timestamp(dateFormat.parse(timestampStr).getTime());
+
+            PreparedStatement statement = connection.prepareStatement(insertQuery);
+            statement.setString(1, registro.getNombre());
+            statement.setString(2, registro.getCanal());
+            statement.setString(3, registro.getApellido());
+            statement.setTimestamp(4, timestamp);
+            statement.setDouble(5, registro.getImporte());
+            statement.executeUpdate();
+            log.info("Registro insertado en la base de datos de canal.");
+
         } catch (Exception e) {
-            log.error("Error al insertar el registro en la base de datos: " + e.getMessage());
+            e.printStackTrace();
+            log.error("Error al insertar el registro en la base de datos: " + e.toString());
         }
     }
 }
