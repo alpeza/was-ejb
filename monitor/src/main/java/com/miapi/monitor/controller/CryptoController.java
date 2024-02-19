@@ -29,6 +29,7 @@ public class CryptoController {
     @GetMapping("/{id}")
     public ResponseEntity<CryptoEntity> getCryptoById(@PathVariable("id") Long id) {
         Optional<CryptoEntity> crypto = cryptoService.getCryptoById(id);
+        if(id == 1) throw new RuntimeException("¡Esta es una excepción lanzada a propósito!");
         return crypto.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

@@ -1,11 +1,13 @@
 package com.miapi.monitor.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 
 @Data
+@AllArgsConstructor
 public class OrderEntity {
 
     @Column(name = "FROM")
