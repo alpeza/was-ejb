@@ -1,6 +1,7 @@
-package com.miapi.monitor.arch;
+package com.miapi.monitor.ARCH.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.miapi.monitor.ARCH.common.Literales;
 import lombok.Data;
 
 import java.util.UUID;

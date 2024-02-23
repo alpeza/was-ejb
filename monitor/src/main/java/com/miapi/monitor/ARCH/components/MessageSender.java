@@ -1,4 +1,4 @@
-package com.miapi.monitor.components;
+package com.miapi.monitor.ARCH.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;

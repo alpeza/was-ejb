@@ -1,6 +1,6 @@
 package com.miapi.monitor.service;
 
-import com.miapi.monitor.components.MessageSender;
+import com.miapi.monitor.ARCH.components.MessageSender;
 import com.miapi.monitor.repositories.CryptoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

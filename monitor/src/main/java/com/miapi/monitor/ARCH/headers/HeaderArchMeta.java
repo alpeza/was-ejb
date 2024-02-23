@@ -1,4 +1,4 @@
-package com.miapi.monitor.arch;
+package com.miapi.monitor.ARCH.headers;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

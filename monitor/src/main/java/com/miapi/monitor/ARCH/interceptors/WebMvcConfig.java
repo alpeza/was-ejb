@@ -1,6 +1,6 @@
-package com.miapi.monitor.arch;
+package com.miapi.monitor.ARCH.interceptors;
 
-import com.miapi.monitor.components.MessageSender;
+import com.miapi.monitor.ARCH.components.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

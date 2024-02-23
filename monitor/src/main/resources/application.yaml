@@ -22,3 +22,22 @@ ibm:
     channel: DEV.ADMIN.SVRCONN
     host: localhost
     port: 1414
+
+#*****************************************
+## Apps
+#*****************************************
+arch:
+  mq:
+    canales:
+      tienda: CANAL.TIENDA
+      internet: CANAL.INTERNET
+      telefonico: CANAL.TELEFONICO
+
+apps:
+  clientes:
+    type: DS #Servicio de datos
+  storcks:
+    type: DS #Servicio de datos
+  comercio:
+    type: IS #Servicio de integración
+

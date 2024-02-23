@@ -1,4 +1,4 @@
-package com.miapi.monitor.arch;
+package com.miapi.monitor.ARCH.common;
 
 public class Literales {
     // Estados
