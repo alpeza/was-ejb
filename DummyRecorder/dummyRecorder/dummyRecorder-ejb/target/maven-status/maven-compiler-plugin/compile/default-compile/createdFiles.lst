@@ -1,6 +1,8 @@
-com/dummyRecorder/mbeans/AppMonitor.class
 com/dummyRecorder/model/TransaccionRecord.class
 com/dummyRecorder/mbeans/AppMonitorMBean.class
 com/dummyRecorder/ejb/EjemploMDB.class
+com/dummyRecorder/model/TXMQRecord.class
+com/dummyRecorder/mbeans/AppMonitor.class
 com/dummyRecorder/mbeans/MDBStats.class
+com/dummyRecorder/negocio/ProcesadorTx.class
 com/dummyRecorder/model/Transaccion.class

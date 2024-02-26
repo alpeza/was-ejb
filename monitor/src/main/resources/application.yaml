@@ -27,11 +27,15 @@ ibm:
 ## Apps
 #*****************************************
 arch:
-  mq:
-    canales:
-      tienda: CANAL.TIENDA
-      internet: CANAL.INTERNET
-      telefonico: CANAL.TELEFONICO
+  canales:
+    - id: default
+      mq: CANAL.INTERNET
+    - id: tienda
+      mq: CANAL.TIENDA
+    - id: internet
+      mq: CANAL.INTERNET
+    - id: telefonico
+      mq: CANAL.TELEFONICO
 
 apps:
   clientes:

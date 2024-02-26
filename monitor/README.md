@@ -185,3 +185,12 @@ a la carpeta `/home/ubuntu23/tmpprojects/was-ejb/monitor/extlib`
 
 
 docker cp was:/opt/IBM/WebSphere/AppServer/runtimes/com.ibm.ws.admin.client_9.0.jar /home/ubuntu23/tmpprojects/was-ejb/monitor/extlib
+
+
+```bash
+curl -H 'H-Arch-Meta: {"channel":"tienda"}' http://localhost:8080/crypto
+curl -H 'H-Arch-Meta: {"channel":"internet"}' http://localhost:8080/crypto
+curl -H 'H-Arch-Meta: {"channel":"telefonico"}' http://localhost:8080/crypto
+curl -H 'H-Arch-Meta: {"channel":"telefonico", "tier": 2}' http://localhost:8080/crypto
+curl http://localhost:8080/crypto
+```

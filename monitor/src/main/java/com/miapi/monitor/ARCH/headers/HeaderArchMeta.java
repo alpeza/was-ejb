@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class HeaderArchMeta {
     private String txid;
     private String channel;
+    private int tier;
 }

@@ -4,6 +4,7 @@ import com.dummyRecorder.mbeans.MDBStats;
 
 
 import com.dummyRecorder.model.TransaccionRecord;
+import com.dummyRecorder.negocio.ProcesadorTx;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +45,8 @@ public class EjemploMDB implements MessageListener {
             log.info("Llega el mensaje:" + txtMsg.getText());
             MDBStats.incrementaMensajes();
             //Tratamos de procesar e insertar el mensaje en base de datos
-            insertTxIntoDatabase(txtMsg.getText());
+            ProcesadorTx procesadorTx = new ProcesadorTx(datasourceId);
+            procesadorTx.grabaTx(txtMsg.getText());
             MDBStats.incrementaMensajesOK();
         }catch(Exception e) {
             log.error("Error al leer el mensaje que llega a la cola MQ");
@@ -78,25 +80,4 @@ public class EjemploMDB implements MessageListener {
         }
     }
 
-
-
-    public void insertTxIntoDatabase(String tx) {
-        try  {
-            // Obtener el contexto inicial
-            Context ctx = new InitialContext();
-            // Buscar el DataSource usando su nombre JNDI
-            DataSource dataSource = (DataSource) ctx.lookup(datasourceId);
-            // Obtener la conexión del DataSource
-            Connection connection = dataSource.getConnection();
-            //Creamos la transaccion
-            String insertQuery = TransaccionRecord.generateInsertStatement(TransaccionRecord.parseJson(tx));
-            PreparedStatement statement = connection.prepareStatement(insertQuery);
-            statement.executeUpdate();
-            log.info("Registro insertado en la base de datos de canal.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("Error al insertar el registro en la base de datos: " + e.toString() + " -> " + tx);
-        }
-    }
 }
