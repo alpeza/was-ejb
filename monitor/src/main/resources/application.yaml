@@ -4,5 +4,44 @@ wasadmin:
   user: wsadmin
   password: 0YCeKJ/Y
 
-# curl -X GET -u wsadmin:0YCeKJ/Y localhost:8880
-# curl -k -X GET -u wsadmin:0YCeKJ/Y https://localhost:8880 | xmllint --format - | pygmentize -l xml
+
+# Configuración de la conexión a la base de datos Oracle
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/xe
+    username: system
+    password: oracle
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+
+# Configuración de colas MQ.
+ibm:
+  mq:
+    queueManager: QM1
+    channel: DEV.ADMIN.SVRCONN
+    host: localhost
+    port: 1414
+
+#*****************************************
+## Apps
+#*****************************************
+arch:
+  canales:
+    - id: default
+      mq: CANAL.INTERNET
+    - id: tienda
+      mq: CANAL.TIENDA
+    - id: internet
+      mq: CANAL.INTERNET
+    - id: telefonico
+      mq: CANAL.TELEFONICO
+
+apps:
+  clientes:
+    type: DS #Servicio de datos
+  storcks:
+    type: DS #Servicio de datos
+  comercio:
+    type: IS #Servicio de integración
+
